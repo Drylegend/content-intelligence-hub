@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio Player - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .audio-stack {
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    .audio-queue {
+      display: grid;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell" id="audioPage">
+    <section class="section">
+      <div class="container audio-stack">
+        <div class="panel reveal">
+          <div class="info-strip">
+            <span class="meta-pill"><span class="status-inline"><span data-lucide="radio"></span><strong>Now Playing:</strong> <span id="nowPlayingTitle">Current content session</span></span></span>
+            <span class="meta-pill"><span class="status-inline"><span data-lucide="sparkles"></span><strong>Mode:</strong> <span id="nowPlayingMode">Summary</span></span></span>
+            <span class="meta-pill"><span class="status-inline"><span data-lucide="mic-2"></span><strong>Voice:</strong> <span id="nowPlayingVoice">en-US-AriaNeural</span></span></span>
+          </div>
+        </div>
+
+        <div class="panel reveal">
+          <span class="eyebrow">Audio Settings</span>
+          <div class="grid-2" style="margin-top: 1rem; gap: 1rem;">
+            <div class="field-grid two">
+              <label class="mode-card" id="audioModeFullCard">
+                <input id="audioModeFullInput" type="radio" name="audioModeLive" value="full" style="display: none;" />
+                <h3><span class="status-inline"><span data-lucide="book-open-text"></span> Full Text</span></h3>
+                <p id="audioFullWordCount">0 words</p>
+                <small id="audioFullDuration">Estimated duration: 0 minutes</small>
+              </label>
+              <label class="mode-card" id="audioModeSummaryCard">
+                <input id="audioModeSummaryInput" type="radio" name="audioModeLive" value="summary" style="display: none;" />
+                <h3><span class="status-inline"><span data-lucide="file-text"></span> Summary</span></h3>
+                <p id="audioSummaryWordCount">Summary not available yet</p>
+                <small id="audioSummaryDuration">Generate summary first</small>
+              </label>
+            </div>
+            <div class="field-grid">
+              <div class="field">
+                <label for="audioVoiceSelect"><span data-lucide="mic-2"></span> Voice Selector</label>
+                <select id="audioVoiceSelect">
+                  <optgroup label="US Voices">
+                    <option value="en-US-AriaNeural">Aria</option>
+                    <option value="en-US-GuyNeural">Guy</option>
+                  </optgroup>
+                  <optgroup label="UK Voices">
+                    <option value="en-GB-SoniaNeural">Sonia</option>
+                    <option value="en-GB-RyanNeural">Ryan</option>
+                  </optgroup>
+                  <optgroup label="India Voices">
+                    <option value="en-IN-NeerjaNeural">Neerja</option>
+                    <option value="en-IN-PrabhatNeural">Prabhat</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="quick-action" style="min-height: unset;">
+                <h3>Current source</h3>
+                <p id="audioConfigStatus">Choose a voice and source mode, then press play to generate the matching audio.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="audio-player reveal">
+          <div class="player-surface">
+            <div class="cover-art">
+              <span class="pill"><span data-lucide="waves"></span> Streaming Session</span>
+              <h3 id="playbackSourceTitle" style="margin-top: 1rem;">Summary Playback</h3>
+              <p>Chunked speech arrives progressively while the remaining audio is generated in the background.</p>
+              <div class="cover-art-disc"></div>
+              <div class="waveform" id="waveformVisual" aria-hidden="true">
+                <span class="wave-bar" style="height: 42%;"></span>
+                <span class="wave-bar" style="height: 78%;"></span>
+                <span class="wave-bar" style="height: 58%;"></span>
+                <span class="wave-bar" style="height: 88%;"></span>
+                <span class="wave-bar" style="height: 54%;"></span>
+                <span class="wave-bar" style="height: 72%;"></span>
+                <span class="wave-bar" style="height: 38%;"></span>
+                <span class="wave-bar" style="height: 66%;"></span>
+                <span class="wave-bar" style="height: 92%;"></span>
+                <span class="wave-bar" style="height: 48%;"></span>
+                <span class="wave-bar" style="height: 76%;"></span>
+                <span class="wave-bar" style="height: 58%;"></span>
+              </div>
+              <div class="meta-strip" style="padding-left: 0; padding-right: 0;">
+                <span class="meta-pill"><strong>Format:</strong> WebSocket audio</span>
+                <span class="meta-pill"><strong>Seekable:</strong> Yes</span>
+              </div>
+            </div>
+
+            <div>
+              <span class="eyebrow">Streaming Player</span>
+              <h2>Listen while new chunks arrive</h2>
+              <p>Playback feels like a real media surface, with transport controls, a visible timeline, and generation status that keeps pace with the stream.</p>
+
+              <div class="transport-cluster" style="margin: 2rem 0 1.2rem;">
+                <button class="transport-btn" type="button" aria-label="Previous chapter"><span data-lucide="skip-back"></span></button>
+                <button class="play-button" id="playToggle" type="button" aria-label="Play audio"><span id="playIcon" class="player-icon" aria-hidden="true">▶</span></button>
+                <button class="transport-btn" type="button" aria-label="Next chapter"><span data-lucide="skip-forward"></span></button>
+              </div>
+
+              <p id="playLabel" style="text-align: center; margin-bottom: 1rem;">Ready to start streaming</p>
+              <div class="timeline">
+                <div class="timeline-fill" id="timelineFill"></div>
+              </div>
+              <div class="time-row" style="margin-top: 0.8rem;">
+                <span class="mono" id="currentTime">00:00</span>
+                <span class="mono" id="totalTime">00:00</span>
+              </div>
+              <div class="meta-strip" style="padding-left: 0; padding-right: 0; margin-top: 0.8rem;">
+                <span class="meta-pill"><strong>Live chunk:</strong> <span id="activeChunkLabel">Waiting for first chunk</span></span>
+                <span class="meta-pill"><strong>Chunk time:</strong> <span class="mono" id="chunkTime">00:00 / 00:00</span></span>
+              </div>
+              <div class="player-controls" style="margin-top: 1.2rem;">
+                <label class="field" style="flex: 1;">
+                  <span class="status-inline"><span data-lucide="volume-2"></span> Volume</span>
+                  <input class="range" id="volumeRange" type="range" min="0" max="100" value="72" />
+                </label>
+                <label class="field" style="width: min(190px, 100%);">
+                  <span class="status-inline"><span data-lucide="gauge"></span> Speed</span>
+                  <select id="speedSelect">
+                    <option>0.75x</option>
+                    <option selected>1x</option>
+                    <option>1.25x</option>
+                    <option>1.5x</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel reveal">
+          <span class="eyebrow">Generation Progress</span>
+          <div class="progress-shell">
+            <span id="generationStatus"><span class="loader-dots" aria-hidden="true"><span></span><span></span><span></span></span> Waiting for stream generation...</span>
+            <div class="progress-bar">
+              <div class="progress-fill" id="generationFill" style="width: 36%;"></div>
+            </div>
+            <div class="meta-strip">
+              <span class="meta-pill"><strong>Chunks ready:</strong> <span id="chunksReadyCount">0</span></span>
+              <span class="meta-pill"><strong>Chunk window:</strong> 150 words max</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2 reveal">
+          <div class="quick-action">
+            <h3><span class="status-inline"><span data-lucide="cloud-upload"></span> Save To Cloud</span></h3>
+            <p>Store the generated audio link in Cloudinary and update the related content record.</p>
+            <small>Enabled after the full chunk set finishes.</small>
+            <button class="btn btn-primary" id="saveAudioButton" type="button" style="margin-top: 1rem;">Save Audio</button>
+          </div>
+          <div class="quick-action">
+            <h3><span class="status-inline"><span data-lucide="download"></span> Download Audio</span></h3>
+            <p>Direct download stays disabled until all chunks are complete and assembled.</p>
+            <small>Button state mirrors the final backend workflow.</small>
+            <button class="btn btn-outline" id="downloadAudioButton" type="button" disabled style="margin-top: 1rem; opacity: 0.55;">Download</button>
+          </div>
+        </div>
+
+        <div class="panel reveal audio-queue">
+          <span class="eyebrow">Live Queue</span>
+          <div class="chapter-list" id="chunkQueueList"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Content Intelligence Hub</h3><p class="footer-note">The audio player is designed for WebSocket-based streaming and chunk-aware playback.</p></div>
+      <div><h4>Flow</h4><ul class="footer-links"><li><a href="scraper.html">Scraper</a></li><li><a href="summary.html">Summary</a></li><li><a href="saved.html">Saved Content</a></li></ul></div>
+      <div><h4>Project</h4><ul class="footer-links"><li><a href="dashboard.html">Dashboard</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul><p class="footer-note">Copyright <span data-year></span> CIH.</p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/audio.js"></script>
+</body>
+</html>

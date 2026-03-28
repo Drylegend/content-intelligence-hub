@@ -1,0 +1,38 @@
+<svg width="960" height="720" viewBox="0 0 960 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="88" y1="68" x2="822" y2="642" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0F172A"/>
+      <stop offset="0.55" stop-color="#10213E"/>
+      <stop offset="1" stop-color="#08101E"/>
+    </linearGradient>
+    <linearGradient id="disc" x1="248" y1="182" x2="488" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <linearGradient id="player" x1="470" y1="146" x2="772" y2="546" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#123457"/>
+      <stop offset="1" stop-color="#0D1A31"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="720" rx="48" fill="url(#bg)"/>
+  <circle cx="204" cy="160" r="96" fill="#38BDF8" fill-opacity="0.1"/>
+  <circle cx="760" cy="578" r="152" fill="#14B8A6" fill-opacity="0.1"/>
+  <rect x="152" y="118" width="656" height="484" rx="36" fill="url(#player)" stroke="white" stroke-opacity="0.08" stroke-width="2"/>
+  <circle cx="326" cy="360" r="126" fill="url(#disc)"/>
+  <circle cx="326" cy="360" r="84" fill="#0F172A" fill-opacity="0.68"/>
+  <circle cx="326" cy="360" r="28" fill="#F8FAFC"/>
+  <rect x="498" y="196" width="236" height="24" rx="12" fill="#CFFAFE" fill-opacity="0.8"/>
+  <rect x="498" y="244" width="188" height="16" rx="8" fill="white" fill-opacity="0.28"/>
+  <rect x="498" y="314" width="210" height="16" rx="8" fill="white" fill-opacity="0.2"/>
+  <rect x="498" y="390" width="188" height="18" rx="9" fill="#86EFAC" fill-opacity="0.7"/>
+  <rect x="498" y="510" width="236" height="18" rx="9" fill="white" fill-opacity="0.18"/>
+  <rect x="498" y="548" width="172" height="16" rx="8" fill="white" fill-opacity="0.12"/>
+  <rect x="498" y="446" width="210" height="14" rx="7" fill="white" fill-opacity="0.12"/>
+  <path d="M544 480C562 458 580 446 598 446C616 446 634 458 652 480C670 502 688 514 706 514" stroke="#38BDF8" stroke-width="12" stroke-linecap="round"/>
+  <rect x="520" y="346" width="192" height="12" rx="6" fill="#38BDF8" fill-opacity="0.22"/>
+  <rect x="520" y="346" width="124" height="12" rx="6" fill="url(#disc)"/>
+  <circle cx="646" cy="352" r="18" fill="#F8FAFC"/>
+  <path d="M585 530L615 548L585 566V530Z" fill="#F8FAFC"/>
+  <rect x="630" y="530" width="12" height="36" rx="6" fill="#F8FAFC" fill-opacity="0.88"/>
+  <rect x="652" y="530" width="12" height="36" rx="6" fill="#F8FAFC" fill-opacity="0.88"/>
+</svg>

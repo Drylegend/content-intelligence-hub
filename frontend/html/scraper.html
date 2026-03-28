@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scraper - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <style>
+    .scraper-layout {
+      display: grid;
+      gap: 1.4rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell" id="scraperPage">
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Core Page</span>
+          <h1>Scrape and upload content</h1>
+          <p>Pick a URL or file input path, validate the source, and prepare the content session that later flows into summary and audio generation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container scraper-layout">
+        <div class="panel reveal" style="padding: 1.6rem;" data-tab-scope>
+          <div class="meta-strip" style="padding: 0 0 1rem;">
+            <span class="meta-pill"><span class="status-inline"><span data-lucide="link-2"></span><strong> URL scrape</strong></span></span>
+            <span class="meta-pill"><span class="status-inline"><span data-lucide="file-up"></span><strong> Client-side parsing</strong></span></span>
+            <span class="meta-pill"><span class="status-inline"><span data-lucide="shield-check"></span><strong> Validation ready</strong></span></span>
+          </div>
+          <div class="tab-row">
+            <button class="tab-btn is-active" type="button" data-source-switch="url"><span class="status-inline"><span data-lucide="globe"></span> URL</span></button>
+            <button class="tab-btn" type="button" data-source-switch="file"><span class="status-inline"><span data-lucide="folder-up"></span> File Upload</span></button>
+          </div>
+
+          <div class="tab-panel is-active" data-source-panel="url">
+            <form id="urlScrapeForm" class="form-shell" novalidate>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="sourceUrl"><span data-lucide="search-code"></span> Source URL</label>
+                  <input id="sourceUrl" type="url" placeholder="https://example.com/article" />
+                  <span class="hint">Paste a public article or documentation page to extract readable text.</span>
+                  <span class="field-error" data-error-for="sourceUrl"></span>
+                </div>
+                <button class="btn btn-primary btn-wide" type="submit" id="scrapeSubmitButton"><span data-lucide="scan-search"></span> Scrape URL</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="tab-panel" data-source-panel="file">
+            <div class="form-shell">
+              <div class="dropzone">
+                <div>
+                  <h3><span class="status-inline"><span data-lucide="file-stack"></span> Drop a file here or browse manually</span></h3>
+                  <p>Accepted formats: PDF, DOCX, TXT</p>
+                  <small id="fileMeta">Accepted: PDF, DOCX, TXT up to 50MB.</small>
+                  <div style="margin-top: 1rem;">
+                    <input id="sourceFile" type="file" accept=".pdf,.docx,.txt" />
+                    <span class="field-error" data-error-for="sourceFile"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel reveal hidden" id="scrapeProgress">
+          <div class="progress-shell">
+            <div class="meta-strip">
+              <span class="meta-pill"><strong>Status:</strong> <span id="scrapeStatus">Waiting for input</span></span>
+              <span class="meta-pill" id="wordCountBadge"><strong>Estimated words:</strong> 0</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="scrapeProgressFill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel reveal hidden" id="scrapeResult">
+          <span class="eyebrow">Result Preview</span>
+          <div class="preview-box" id="previewText">The first 500 characters of extracted content will appear here.</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
+            <a class="btn btn-primary" href="summary.html" id="openSummaryButton"><span data-lucide="sparkles"></span> Review Summary And Audio</a>
+            <a class="btn btn-outline" href="audio.html" id="openAudioButton"><span data-lucide="headphones"></span> Open Audio Settings</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Content Intelligence Hub</h3><p class="footer-note">This page is the entry point for URL scraping and file upload workflows.</p></div>
+      <div><h4>Continue</h4><ul class="footer-links"><li><a href="summary.html">Summary</a></li><li><a href="audio.html">Audio</a></li><li><a href="saved.html">Saved Content</a></li></ul></div>
+      <div><h4>Project</h4><ul class="footer-links"><li><a href="features.html">Features</a></li><li><a href="register.html">Register</a></li><li><a href="contact.html">Contact</a></li></ul><p class="footer-note">Copyright <span data-year></span> CIH.</p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/validation.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/scraper.js"></script>
+</body>
+</html>

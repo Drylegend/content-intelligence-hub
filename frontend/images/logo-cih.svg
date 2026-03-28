@@ -1,0 +1,19 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cih-bg" x1="18" y1="14" x2="112" y2="116" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2563EB"/>
+      <stop offset="0.55" stop-color="#14B8A6"/>
+      <stop offset="1" stop-color="#43E97B"/>
+    </linearGradient>
+    <linearGradient id="cih-stroke" x1="34" y1="28" x2="96" y2="98" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E0F2FE"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="108" height="108" rx="30" fill="url(#cih-bg)"/>
+  <rect x="10.5" y="10.5" width="107" height="107" rx="29.5" stroke="white" stroke-opacity="0.16"/>
+  <path d="M39 42C45.5 35 55 31 64.5 31C76.5 31 87 37.5 92.5 47.5" stroke="url(#cih-stroke)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M89 83C82.5 90 73 94 63.5 94C51.5 94 41 87.5 35.5 77.5" stroke="url(#cih-stroke)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M35 57H91" stroke="url(#cih-stroke)" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="64" cy="64" r="8" fill="#F8FAFC"/>
+</svg>

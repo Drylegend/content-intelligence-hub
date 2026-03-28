@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Features - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .comparison-panel {
+      display: grid;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Everything You Need</span>
+          <h1>Feature coverage across capture, summarization, playback, and storage</h1>
+          <p>The project combines core content workflows with the implementation details needed for a realistic full-stack build.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="grid-3">
+          <article class="card reveal"><div class="card-icon"><span data-lucide="globe"></span></div><h3>Web Scraping</h3><p>Submit any public URL and extract meaningful text with Cheerio on the backend.</p></article>
+          <article class="card reveal"><div class="card-icon"><span data-lucide="file-up"></span></div><h3>File Upload</h3><p>Support PDF, DOCX, and TXT uploads with client-side parsing hooks for PDF.js and Mammoth.js.</p></article>
+          <article class="card reveal"><div class="card-icon"><span data-lucide="sparkles"></span></div><h3>AI Summaries</h3><p>Generate concise, storage-friendly summaries through the Gemini API.</p></article>
+          <article class="card reveal"><div class="card-icon"><span data-lucide="audio-lines"></span></div><h3>Text To Speech</h3><p>Convert full text or summaries into chunked speech with voice selection and playback controls.</p></article>
+          <article class="card reveal"><div class="card-icon"><span data-lucide="cloud"></span></div><h3>Cloud Storage</h3><p>Persist metadata in MongoDB Atlas and save final audio URLs in Cloudinary.</p></article>
+          <article class="card reveal"><div class="card-icon"><span data-lucide="chart-column-big"></span></div><h3>Dashboard Analytics</h3><p>Surface recent activity, usage metrics, and saved content history in one place.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-tab-scope>
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Comparison Demo</span>
+          <h2>Switch between reading and listening modes</h2>
+        </div>
+        <div class="panel reveal">
+          <div class="tab-row" data-tab-group>
+            <button class="tab-btn is-active" type="button" data-tab-target="fullTextPanel">Full Text</button>
+            <button class="tab-btn" type="button" data-tab-target="summaryPanel">Summary Audio</button>
+          </div>
+          <div id="fullTextPanel" class="tab-panel is-active comparison-panel" data-panel>
+            <div class="summary-box">
+              <strong>Article mode</strong>
+              <p>Ideal when the exact wording matters. Users can inspect longer source material, review structure, and then decide whether to save the full text for later playback.</p>
+            </div>
+          </div>
+          <div id="summaryPanel" class="tab-panel comparison-panel" data-panel>
+            <div class="summary-box">
+              <strong>Summary mode</strong>
+              <p>Best when the goal is speed. The user can reduce thousands of words to a smaller listening session before generating audio.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Voice Preview</span>
+          <h2>Organized voice selection for different audiences</h2>
+        </div>
+        <div class="grid-3">
+          <article class="voice-card reveal">
+            <h3>US Voices</h3>
+            <p>Balanced default choices for product demos, tutorials, and day-to-day summaries.</p>
+            <small>Example: en-US-AriaNeural, en-US-GuyNeural</small>
+          </article>
+          <article class="voice-card reveal">
+            <h3>UK Voices</h3>
+            <p>Useful when the content tone should feel editorial, polished, or presentation-ready.</p>
+            <small>Example: en-GB-SoniaNeural, en-GB-RyanNeural</small>
+          </article>
+          <article class="voice-card reveal">
+            <h3>India Voices</h3>
+            <p>Helpful for regional listening experiences and localized delivery.</p>
+            <small>Example: en-IN-NeerjaNeural, en-IN-PrabhatNeural</small>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Content Intelligence Hub</h3><p class="footer-note">Feature coverage designed to map directly to your backend implementation plan.</p></div>
+      <div><h4>Build Flow</h4><ul class="footer-links"><li><a href="scraper.html">Scraper</a></li><li><a href="summary.html">Summary</a></li><li><a href="audio.html">Audio</a></li></ul></div>
+      <div><h4>More</h4><ul class="footer-links"><li><a href="dashboard.html">Dashboard</a></li><li><a href="saved.html">Saved</a></li><li><a href="contact.html">Contact</a></li></ul><p class="footer-note">Copyright <span data-year></span> CIH.</p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/ui.js"></script>
+</body>
+</html>

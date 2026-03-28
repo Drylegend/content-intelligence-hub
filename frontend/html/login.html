@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .login-intro {
+      align-self: center;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="section">
+      <div class="container grid-2">
+        <div class="reveal login-intro">
+          <span class="eyebrow">Welcome Back</span>
+          <h1>Sign in to reopen your saved research, summaries, and audio sessions</h1>
+          <p>Returning users should enter the same credentials they created during sign up, then continue directly into the protected dashboard flow.</p>
+          <ul class="check-list" style="margin-top: 1.5rem;">
+            <li><strong>Resume saved work</strong>Jump back into past content, summaries, and audio jobs without starting over.</li>
+            <li><strong>JWT session access</strong>Protected routes unlock immediately after a successful sign-in.</li>
+            <li><strong>Fast handoff</strong>The dashboard becomes your default landing page once authentication succeeds.</li>
+          </ul>
+        </div>
+
+        <div class="form-shell reveal">
+          <form id="loginForm" novalidate>
+            <div class="field-grid">
+              <div class="field"><label for="email"><span data-lucide="mail"></span> Email Address</label><input id="email" type="email" placeholder="Email Address" autocomplete="email" /><span class="hint">Use the same email you registered with.</span><span class="field-error" data-error-for="email"></span></div>
+              <div class="field"><label for="password"><span data-lucide="lock-keyhole"></span> Password</label><input id="password" type="password" placeholder="Password" autocomplete="current-password" /><span class="hint">A successful login stores your token for protected requests.</span><span class="field-error" data-error-for="password"></span></div>
+              <button class="btn btn-primary" type="submit" id="loginSubmitButton"><span data-lucide="log-in"></span> Sign In</button>
+            </div>
+          </form>
+          <p style="margin-top: 1rem;">Need a new account? <a href="register.html" class="text-gradient">Create one here</a></p>
+          <div class="success-note hidden" id="loginSuccess">Signed in successfully.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Content Intelligence Hub</h3><p class="footer-note">Sign in to continue protected scraping, summaries, audio generation, and saved history.</p></div>
+      <div><h4>Go Next</h4><ul class="footer-links"><li><a href="dashboard.html">Dashboard</a></li><li><a href="saved.html">Saved</a></li><li><a href="scraper.html">Scraper</a></li></ul></div>
+      <div><h4>Project</h4><ul class="footer-links"><li><a href="register.html">Register</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul><p class="footer-note">Copyright <span data-year></span> CIH.</p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/validation.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.CIH.getToken()) {
+        window.location.replace(window.CIH.routes.dashboard);
+        return;
+      }
+
+      const form = document.getElementById("loginForm");
+      const success = document.getElementById("loginSuccess");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const submitButton = document.getElementById("loginSubmitButton");
+        const values = {
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value
+        };
+
+        const errors = window.CIH.validateLogin(values);
+        window.CIH.showErrors(form, errors);
+
+        if (Object.keys(errors).length) {
+          success.classList.add("hidden");
+          return;
+        }
+
+        window.CIH.setButtonLoading(submitButton, true);
+        window.CIH.showLoader("Signing in");
+        try {
+          const payload = await window.CIH.apiFetch("/api/auth/login", {
+            method: "POST",
+            headers: { Authorization: "" },
+            body: JSON.stringify(values)
+          });
+
+          window.CIH.setToken(payload.token);
+          success.textContent = `Welcome back, ${payload.user.name}. Redirecting to your dashboard.`;
+          success.classList.remove("hidden");
+          window.setTimeout(() => {
+            window.location.href = window.CIH.routes.dashboard;
+          }, 600);
+        } catch (error) {
+          success.classList.add("hidden");
+          window.CIH.showToast(error.message);
+        } finally {
+          window.CIH.setButtonLoading(submitButton, false);
+          window.CIH.hideLoader();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

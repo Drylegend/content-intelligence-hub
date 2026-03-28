@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .register-intro {
+      align-self: center;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="section">
+      <div class="container grid-2">
+        <div class="reveal register-intro">
+          <span class="eyebrow">Create Account</span>
+          <h1>Register for saved sessions and dashboard access</h1>
+          <p>The final version will submit directly to the Node and Express auth route and store the JWT in localStorage.</p>
+          <ul class="check-list" style="margin-top: 1.5rem;">
+            <li><strong>JWT-ready UI</strong>Prepared for `Authorization: Bearer` requests across protected routes.</li>
+            <li><strong>MongoDB-backed form</strong>The payload structure matches the project blueprint for user creation.</li>
+            <li><strong>Client validation included</strong>Errors surface inline before the API request is made.</li>
+          </ul>
+        </div>
+
+        <div class="form-shell reveal">
+          <form id="registerForm" novalidate>
+            <div class="field-grid">
+              <div class="field"><label for="name"><span data-lucide="user-round"></span> Full Name</label><input id="name" type="text" placeholder="Full Name" /><span class="hint">Use the name that should appear on saved activity records.</span><span class="field-error" data-error-for="name"></span></div>
+              <div class="field"><label for="email"><span data-lucide="mail"></span> Email Address</label><input id="email" type="email" placeholder="Email Address" /><span class="hint">This becomes your sign-in identity once auth is wired.</span><span class="field-error" data-error-for="email"></span></div>
+              <div class="field"><label for="password"><span data-lucide="lock-keyhole"></span> Password</label><input id="password" type="password" placeholder="Password" /><span class="field-error" data-error-for="password"></span></div>
+              <div class="field"><label for="confirm"><span data-lucide="shield-check"></span> Confirm Password</label><input id="confirm" type="password" placeholder="Confirm Password" /><span class="field-error" data-error-for="confirm"></span></div>
+              <div class="field"><label for="role"><span data-lucide="briefcase-business"></span> Role</label><select id="role"><option value="user">User</option><option value="researcher">Researcher</option></select><span class="field-error" data-error-for="role"></span></div>
+              <label class="checkbox-row"><input id="terms" type="checkbox" /> I agree to the Terms and want secure JWT-based access.</label>
+              <span class="field-error" data-error-for="terms"></span>
+              <button class="btn btn-primary" type="submit" id="registerSubmitButton"><span data-lucide="user-plus"></span> Create Account</button>
+            </div>
+          </form>
+          <p style="margin-top: 1rem;">Already have an account? <a href="login.html" class="text-gradient">Sign in here</a></p>
+          <div class="success-note hidden" id="registerSuccess">Frontend validation passed. The backend register route can now be connected cleanly.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Content Intelligence Hub</h3><p class="footer-note">Registration is designed to store credentials securely and unlock protected workflow pages.</p></div>
+      <div><h4>Go Next</h4><ul class="footer-links"><li><a href="dashboard.html">Dashboard</a></li><li><a href="scraper.html">Scraper</a></li><li><a href="saved.html">Saved</a></li></ul></div>
+      <div><h4>Project</h4><ul class="footer-links"><li><a href="features.html">Features</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul><p class="footer-note">Copyright <span data-year></span> CIH.</p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/validation.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.CIH.getToken()) {
+        window.location.replace(window.CIH.routes.dashboard);
+        return;
+      }
+
+      const form = document.getElementById("registerForm");
+      const success = document.getElementById("registerSuccess");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const submitButton = document.getElementById("registerSubmitButton");
+        const values = {
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+          confirm: document.getElementById("confirm").value,
+          terms: document.getElementById("terms").checked
+        };
+
+        const errors = window.CIH.validateRegister(values);
+        window.CIH.showErrors(form, errors);
+
+        if (Object.keys(errors).length) {
+          success.classList.add("hidden");
+          return;
+        }
+
+        window.CIH.setButtonLoading(submitButton, true);
+        window.CIH.showLoader("Creating account");
+        try {
+          const payload = await window.CIH.apiFetch("/api/auth/register", {
+            method: "POST",
+            headers: { Authorization: "" },
+            body: JSON.stringify({
+              name: values.name,
+              email: values.email,
+              password: values.password,
+              role: document.getElementById("role").value
+            })
+          });
+
+          window.CIH.setToken(payload.token);
+          success.textContent = `Welcome, ${payload.user.name}. Your account is ready.`;
+          success.classList.remove("hidden");
+          window.setTimeout(() => {
+            window.location.href = window.CIH.routes.dashboard;
+          }, 700);
+        } catch (error) {
+          success.classList.add("hidden");
+          window.CIH.showToast(error.message);
+        } finally {
+          window.CIH.setButtonLoading(submitButton, false);
+          window.CIH.hideLoader();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

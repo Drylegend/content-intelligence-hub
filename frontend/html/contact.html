@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .contact-cards {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="section">
+      <div class="container grid-2">
+        <div class="reveal">
+          <span class="eyebrow">Contact</span>
+          <h1>Send project questions, bugs, or collaboration ideas</h1>
+          <p>The contact page includes a validated form and a toast feedback pattern that can later connect to a backend route or mail service.</p>
+          <div class="grid-3 contact-cards">
+            <article class="card"><h3><span class="status-inline"><span data-lucide="mail"></span> Email</span></h3><p>team@cih.dev</p></article>
+            <article class="card"><h3><span class="status-inline"><span data-lucide="github"></span> GitHub</span></h3><p>github.com/content-intelligence-hub</p></article>
+            <article class="card"><h3><span class="status-inline"><span data-lucide="graduation-cap"></span> University</span></h3><p>REVA University, Bengaluru</p></article>
+          </div>
+        </div>
+
+        <div class="form-shell reveal">
+          <form id="contactForm" novalidate>
+            <div class="field-grid">
+              <div class="field"><label for="contactName"><span data-lucide="user-round"></span> Name</label><input id="contactName" type="text" placeholder="Your name" /><span class="field-error" data-error-for="contactName"></span></div>
+              <div class="field"><label for="contactEmail"><span data-lucide="mail"></span> Email</label><input id="contactEmail" type="email" placeholder="you@example.com" /><span class="field-error" data-error-for="contactEmail"></span></div>
+              <div class="field"><label for="subject"><span data-lucide="list-filter"></span> Subject</label><select id="subject"><option value="">Select a topic</option><option value="general">General Enquiry</option><option value="bug">Bug Report</option><option value="feature">Feature Request</option><option value="collaboration">Collaboration</option></select><span class="field-error" data-error-for="subject"></span></div>
+              <div class="field"><label for="message"><span data-lucide="messages-square"></span> Message</label><textarea id="message" placeholder="Write your message here"></textarea><span class="field-error" data-error-for="message"></span></div>
+              <button class="btn btn-primary" type="submit" id="contactSubmitButton"><span data-lucide="send"></span> Send Message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Content Intelligence Hub</h3><p class="footer-note">Contact flow is ready for frontend validation and a future backend messaging endpoint.</p></div>
+      <div><h4>Explore</h4><ul class="footer-links"><li><a href="features.html">Features</a></li><li><a href="scraper.html">Scraper</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
+      <div><h4>Project</h4><ul class="footer-links"><li><a href="saved.html">Saved</a></li><li><a href="register.html">Register</a></li><li><a href="about.html">About</a></li></ul><p class="footer-note">Copyright <span data-year></span> CIH.</p></div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/validation.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("contactForm");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const submitButton = document.getElementById("contactSubmitButton");
+        const values = {
+          contactName: document.getElementById("contactName").value,
+          contactEmail: document.getElementById("contactEmail").value,
+          subject: document.getElementById("subject").value,
+          message: document.getElementById("message").value
+        };
+
+        const errors = window.CIH.validateContact(values);
+        window.CIH.showErrors(form, errors);
+        if (Object.keys(errors).length) {
+          return;
+        }
+
+        window.CIH.setButtonLoading(submitButton, true);
+        window.CIH.showLoader("Sending message");
+        try {
+          await window.CIH.apiFetch("/api/contact", {
+            method: "POST",
+            headers: { Authorization: "" },
+            body: JSON.stringify({
+              name: values.contactName,
+              email: values.contactEmail,
+              subject: values.subject,
+              message: values.message
+            })
+          });
+
+          form.reset();
+          window.CIH.showToast("Message sent!");
+        } catch (error) {
+          window.CIH.showToast(error.message);
+        } finally {
+          window.CIH.setButtonLoading(submitButton, false);
+          window.CIH.hideLoader();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

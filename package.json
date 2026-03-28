@@ -1,0 +1,28 @@
+{
+  "name": "content-intelligence-hub",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Full-stack content intelligence hub with scraping, summarization, and TTS streaming.",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "bcryptjs": "^2.4.3",
+    "cheerio": "^1.0.0",
+    "cloudinary": "^2.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "edge-tts-universal": "^1.0.6",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^7.1.1",
+    "mongoose": "^8.12.1",
+    "node-fetch": "^3.3.2",
+    "ws": "^8.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

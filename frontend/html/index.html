@@ -1,0 +1,235 @@
+<!--  --><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Intelligence Hub - Scrape, Summarize, Listen</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .hero-preview {
+      min-height: 360px;
+      display: grid;
+      gap: 1rem;
+      align-content: end;
+    }
+
+    .hero-preview-card {
+      position: relative;
+      min-height: 340px;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-preview-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    .feature-preview-card .placeholder-visual {
+      min-height: 180px;
+      margin-bottom: 1rem;
+    }
+
+    .feature-preview-media {
+      width: 100%;
+      min-height: 180px;
+      margin-bottom: 1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      object-fit: cover;
+      display: block;
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="hero section-tight">
+      <div class="container hero-panel">
+        <div class="particles" aria-hidden="true">
+          <span class="particle"></span>
+          <span class="particle"></span>
+          <span class="particle"></span>
+          <span class="particle"></span>
+          <span class="particle"></span>
+        </div>
+        <div class="hero-grid">
+          <div class="hero-copy reveal">
+            <span class="pill">Scrape -> Summarize -> Listen</span>
+            <h1>Turn Any Web Page Into <span class="text-gradient">Audio</span></h1>
+            <p>Content Intelligence Hub helps you capture web content or documents, reduce it with AI, and stream it back as listenable audio without switching tools.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary btn-wide" href="scraper.html">Start Scraping</a>
+              <a class="btn btn-outline btn-wide" href="#how-it-works">Watch Demo</a>
+            </div>
+            <div class="hero-metrics">
+              <div class="metric-chip">
+                <strong>JWT + MongoDB</strong>
+                <span>Secure sessions and saved content</span>
+              </div>
+              <div class="metric-chip">
+                <strong>Gemini + TTS</strong>
+                <span>Summaries and audio delivery</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-preview reveal">
+            <div class="hero-preview-card">
+              <picture>
+                <source srcset="../images/hero-bg-dark.png" media="(prefers-color-scheme: dark)" />
+                <img
+                  src="../images/hero-bg.png"
+                  alt="Content Intelligence Hub live workflow preview"
+                  data-theme-image
+                  data-light-src="../images/hero-bg.png"
+                  data-dark-src="../images/hero-bg-dark.png"
+                />
+              </picture>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="grid-3">
+          <div class="stat-card reveal">
+            <strong data-count="35">0</strong>
+            <span>Voices available for output</span>
+          </div>
+          <div class="stat-card reveal">
+            <strong data-count="500">0</strong>
+            <span>Pages and long-form documents processed</span>
+          </div>
+          <div class="stat-card reveal">
+            <strong data-count="3">0</strong>
+            <span>Core steps from source to playback</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">How It Works</span>
+          <h2>Simple on the surface, production-minded underneath</h2>
+          <p>The experience stays lightweight while the backend handles scraping, storage, AI summarization, chunking, retries, and audio streaming.</p>
+        </div>
+        <ul class="list-steps grid-3">
+          <li class="reveal">
+            <strong>1. Scrape</strong>
+            Enter a public URL or upload a research file to start a new content session.
+          </li>
+          <li class="reveal">
+            <strong>2. Summarize</strong>
+            Generate a condensed summary that is easier to scan, save, or convert to speech.
+          </li>
+          <li class="reveal">
+            <strong>3. Listen</strong>
+            Stream the full text or summary in the voice and playback speed you prefer.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Feature Preview</span>
+          <h2>Built for research-heavy workflows</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card feature-preview-card reveal">
+            <img class="feature-preview-media" src="../images/feature-scrape.svg" alt="Illustration of CIH web scraping workflow" />
+            <h3>Web Scraping</h3>
+            <p>Cheerio-based extraction keeps the input flow quick for articles, blogs, and public pages.</p>
+          </article>
+          <article class="card feature-preview-card reveal">
+            <img class="feature-preview-media" src="../images/feature-summary.svg" alt="Illustration of CIH AI summarization workflow" />
+            <h3>AI Summaries</h3>
+            <p>Gemini-generated summaries turn long-form content into smaller, easier-to-review outputs.</p>
+          </article>
+          <article class="card feature-preview-card reveal">
+            <img class="feature-preview-media" src="../images/feature-audio.svg" alt="Illustration of CIH audio playback workflow" />
+            <h3>Audio Playback</h3>
+            <p>Stream audio progressively and keep a clear path to saving the result for later access.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="banner panel reveal" style="padding: 2rem;">
+          <div class="grid-2" style="align-items: center;">
+            <div>
+              <span class="eyebrow">Next Step</span>
+              <h3>Ready to start your first content session?</h3>
+              <p>Move straight into the scraper page to test URL capture and upload flows.</p>
+            </div>
+            <div style="display: flex; justify-content: flex-end; align-items: center;">
+              <a class="btn btn-primary btn-wide" href="scraper.html">Get Started</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>Content Intelligence Hub</h3>
+        <p class="footer-note">A full-stack project blueprint for scraping, summarization, and audio-first content workflows.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul class="footer-links">
+          <li><a href="features.html">Features</a></li>
+          <li><a href="scraper.html">Scraper</a></li>
+          <li><a href="summary.html">Summary</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul class="footer-links">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <p class="footer-note">Copyright <span data-year></span> CIH.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/ui.js"></script>
+</body>
+</html>

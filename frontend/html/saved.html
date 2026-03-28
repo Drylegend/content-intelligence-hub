@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saved Content - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .saved-table-wrap {
+      display: grid;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Saved Content</span>
+          <h1>Review content history with searchable metadata</h1>
+          <p>This page is prepared for API-driven table rendering and pagination once the content routes are connected.</p>
+        </div>
+
+        <div class="panel reveal" style="margin-bottom: 1.5rem;">
+          <div class="grid-4">
+            <div class="field"><label for="searchQuery">Search</label><input id="searchQuery" type="text" placeholder="URL or title" /></div>
+            <div class="field"><label for="dateFrom">From</label><input id="dateFrom" type="date" /></div>
+            <div class="field"><label for="dateTo">To</label><input id="dateTo" type="date" /></div>
+            <div style="display: flex; align-items: end;"><button class="btn btn-primary" id="applySavedFilters" type="button">Apply Filters</button></div>
+          </div>
+        </div>
+
+        <div class="table-shell reveal saved-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Title or URL</th>
+                <th>Type</th>
+                <th>Words</th>
+                <th>Has Summary</th>
+                <th>Has Audio</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contentTableBody">
+              <tr>
+                <td class="mono">en.wikipedia.org/wiki/Machine_learning</td>
+                <td><span class="badge url">URL</span></td>
+                <td>12,430</td>
+                <td><span class="badge good">Yes</span></td>
+                <td><span class="badge good">Yes</span></td>
+                <td>2026-03-27</td>
+                <td><a class="btn btn-outline" href="audio.html">Audio</a></td>
+              </tr>
+              <tr>
+                <td class="mono">market-analysis.docx</td>
+                <td><span class="badge file">FILE</span></td>
+                <td>8,210</td>
+                <td><span class="badge warn">No</span></td>
+                <td><span class="badge warn">No</span></td>
+                <td>2026-03-26</td>
+                <td><a class="btn btn-primary" href="summary.html">Summary</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="meta-strip reveal" style="justify-content: center; margin-top: 1rem;">
+          <button class="btn btn-outline" id="prevPageButton" type="button">Previous</button>
+          <span class="meta-pill"><strong>Page:</strong> <span id="savedPageLabel">1 of 1</span></span>
+          <button class="btn btn-outline" id="nextPageButton" type="button">Next</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Content Intelligence Hub</h3><p class="footer-note">Saved content will eventually load from `/api/content` with search and pagination controls.</p></div>
+      <div><h4>Actions</h4><ul class="footer-links"><li><a href="scraper.html">New Scrape</a></li><li><a href="summary.html">Open Summary</a></li><li><a href="audio.html">Open Audio</a></li></ul></div>
+      <div><h4>Project</h4><ul class="footer-links"><li><a href="dashboard.html">Dashboard</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul><p class="footer-note">Copyright <span data-year></span> CIH.</p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (!window.CIH.requireAuth()) {
+        return;
+      }
+
+      const tbody = document.getElementById("contentTableBody");
+      const searchInput = document.getElementById("searchQuery");
+      const dateFrom = document.getElementById("dateFrom");
+      const dateTo = document.getElementById("dateTo");
+      const pageLabel = document.getElementById("savedPageLabel");
+      const prevButton = document.getElementById("prevPageButton");
+      const nextButton = document.getElementById("nextPageButton");
+      const applyButton = document.getElementById("applySavedFilters");
+      let currentPage = 1;
+      let totalPages = 1;
+
+      function renderRows(items) {
+        if (!items.length) {
+          tbody.innerHTML = '<tr><td colspan="7">No saved content matches your filters.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = items
+          .map((item) => {
+            const sourceLabel = item.sourceType === "url" ? item.sourceUrl : item.fileName;
+            return `
+              <tr>
+                <td class="mono">${sourceLabel || item.title || "Untitled"}</td>
+                <td><span class="badge ${item.sourceType === "url" ? "url" : "file"}">${item.sourceType.toUpperCase()}</span></td>
+                <td>${Number(item.wordCount || 0).toLocaleString()}</td>
+                <td><span class="badge ${item.summary ? "good" : "warn"}">${item.summary ? "Yes" : "No"}</span></td>
+                <td><span class="badge ${item.audioUrl ? "good" : "warn"}">${item.audioUrl ? "Yes" : "No"}</span></td>
+                <td>${window.CIH.formatDate(item.createdAt)}</td>
+                <td>
+                  <button class="btn btn-outline" data-open-summary="${item._id}">Summary</button>
+                  <button class="btn btn-outline" data-open-audio="${item._id}" data-audio-mode="full">Full Audio</button>
+                  <button class="btn btn-outline" data-open-audio="${item._id}" data-audio-mode="summary" ${item.summary ? "" : "disabled"}>Summary Audio</button>
+                  <button class="btn btn-danger" data-delete-content="${item._id}">Delete</button>
+                </td>
+              </tr>
+            `;
+          })
+          .join("");
+      }
+
+      async function loadSavedContent() {
+        try {
+          window.CIH.showLoader("Loading saved content");
+          const payload = await window.CIH.apiFetch(`/api/content?page=${currentPage}&limit=10&search=${encodeURIComponent(searchInput.value.trim())}`);
+          const filteredItems = payload.items.filter((item) => {
+            const createdAt = new Date(item.createdAt);
+            const fromMatch = !dateFrom.value || createdAt >= new Date(dateFrom.value);
+            const toMatch = !dateTo.value || createdAt <= new Date(`${dateTo.value}T23:59:59`);
+            return fromMatch && toMatch;
+          });
+
+          totalPages = payload.totalPages || 1;
+          pageLabel.textContent = `${currentPage} of ${totalPages}`;
+          prevButton.disabled = currentPage <= 1;
+          nextButton.disabled = currentPage >= totalPages;
+          renderRows(filteredItems);
+        } catch (error) {
+          tbody.innerHTML = `<tr><td colspan="7">${error.message}</td></tr>`;
+        } finally {
+          window.CIH.hideLoader();
+        }
+      }
+
+      applyButton.addEventListener("click", () => {
+        currentPage = 1;
+        loadSavedContent();
+      });
+
+      prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          loadSavedContent();
+        }
+      });
+
+      nextButton.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage += 1;
+          loadSavedContent();
+        }
+      });
+
+      tbody.addEventListener("click", async (event) => {
+        const openButton = event.target.closest("[data-open-summary]");
+        if (openButton) {
+          window.CIH.storeContentId(openButton.dataset.openSummary);
+          window.location.href = "summary.html";
+          return;
+        }
+
+        const audioButton = event.target.closest("[data-open-audio]");
+        if (audioButton) {
+          window.CIH.storeContentId(audioButton.dataset.openAudio);
+          sessionStorage.setItem("audioMode", audioButton.dataset.audioMode || "full");
+          if (!sessionStorage.getItem("audioVoice")) {
+            sessionStorage.setItem("audioVoice", "en-US-AriaNeural");
+          }
+          window.location.href = "audio.html";
+          return;
+        }
+
+        const deleteButton = event.target.closest("[data-delete-content]");
+        if (!deleteButton) {
+          return;
+        }
+
+        try {
+          await window.CIH.apiFetch(`/api/content/${deleteButton.dataset.deleteContent}`, {
+            method: "DELETE"
+          });
+          window.CIH.showToast("Content deleted.");
+          loadSavedContent();
+        } catch (error) {
+          window.CIH.showToast(error.message);
+        }
+      });
+
+      loadSavedContent();
+    });
+  </script>
+</body>
+</html>

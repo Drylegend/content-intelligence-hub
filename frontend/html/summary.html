@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summary - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .summary-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Core Page</span>
+          <h1>Generate and review content summaries</h1>
+          <p>Use the current content session to request a summary, compare word counts, and decide whether the audio source should be the full text or the shorter summary.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container grid-2">
+        <div class="panel reveal">
+          <div class="info-strip">
+            <span class="meta-pill"><strong>Content ID:</strong> <span id="currentContentId">Waiting...</span></span>
+            <span class="meta-pill"><strong>Source:</strong> <span id="summarySourceLabel">Uploaded or scraped content</span></span>
+            <span class="meta-pill"><strong>Date:</strong> <span id="summaryDate"></span></span>
+          </div>
+        </div>
+        <div class="panel reveal">
+          <div class="info-strip">
+            <span class="meta-pill"><strong>Original:</strong> <span id="originalWordCount">0 words</span></span>
+            <span class="meta-pill"><strong>Summary:</strong> <span id="summaryWordCount">Not generated yet</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container grid-2">
+        <div class="panel reveal">
+          <span class="eyebrow">Summary Panel</span>
+          <h2>AI-generated summary output</h2>
+          <div class="summary-box" id="summaryOutput" style="margin-top: 1rem;">
+            Click "Generate Summary" to replace this placeholder with Gemini output once the backend route is connected.
+          </div>
+          <div class="summary-actions">
+            <button class="btn btn-primary" id="generateSummaryButton" type="button"><span data-lucide="sparkles"></span> Generate Summary</button>
+            <span class="hint" id="summaryStatus">Backend route not connected yet. This page is ready for the API hook.</span>
+          </div>
+        </div>
+
+        <div class="panel reveal">
+          <span class="eyebrow">Audio Mode Selector</span>
+          <h2>Choose what to convert to audio</h2>
+          <div class="grid-2" style="margin-top: 1rem;">
+            <label class="mode-card" id="modeFullCard">
+              <input type="radio" name="audioMode" value="full" style="display: none;" />
+              <h3><span class="status-inline"><span data-lucide="book-open-text"></span> Full Text</span></h3>
+              <p>12,430 words</p>
+              <small>Estimated duration: 85 minutes</small>
+            </label>
+            <label class="mode-card is-selected" id="modeSummaryCard">
+              <input type="radio" name="audioMode" value="summary" checked style="display: none;" />
+              <h3><span class="status-inline"><span data-lucide="file-text"></span> Summary</span></h3>
+              <p>320 words</p>
+              <small>Estimated duration: 2 minutes</small>
+            </label>
+          </div>
+
+          <div class="field" style="margin-top: 1.5rem;">
+            <label for="voiceSelect"><span data-lucide="mic-2"></span> Voice Selector</label>
+            <select id="voiceSelect">
+              <optgroup label="US Voices">
+                <option value="en-US-AriaNeural">Aria</option>
+                <option value="en-US-GuyNeural">Guy</option>
+              </optgroup>
+              <optgroup label="UK Voices">
+                <option value="en-GB-SoniaNeural">Sonia</option>
+                <option value="en-GB-RyanNeural">Ryan</option>
+              </optgroup>
+              <optgroup label="India Voices">
+                <option value="en-IN-NeerjaNeural">Neerja</option>
+                <option value="en-IN-PrabhatNeural">Prabhat</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="summary-actions">
+            <button class="btn btn-outline" type="button" id="previewVoiceButton"><span data-lucide="play-circle"></span> Preview Voice</button>
+            <a class="btn btn-primary" href="audio.html" id="goToAudioButton"><span data-lucide="audio-lines"></span> Generate Audio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Content Intelligence Hub</h3><p class="footer-note">Summary review sits between raw extraction and audio generation.</p></div>
+      <div><h4>Next</h4><ul class="footer-links"><li><a href="audio.html">Audio Player</a></li><li><a href="saved.html">Saved Content</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
+      <div><h4>Support</h4><ul class="footer-links"><li><a href="features.html">Features</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul><p class="footer-note">Copyright <span data-year></span> CIH.</p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (!window.CIH.requireAuth()) {
+        return;
+      }
+
+      const contentId = window.CIH.getContentId();
+      const currentContentId = document.getElementById("currentContentId");
+      const sourceLabel = document.getElementById("summarySourceLabel");
+      const originalWordCount = document.getElementById("originalWordCount");
+      const summaryWordCount = document.getElementById("summaryWordCount");
+      const summaryDate = document.getElementById("summaryDate");
+      const summaryOutput = document.getElementById("summaryOutput");
+      const summaryStatus = document.getElementById("summaryStatus");
+      const generateButton = document.getElementById("generateSummaryButton");
+      const voiceSelect = document.getElementById("voiceSelect");
+      const goToAudioButton = document.getElementById("goToAudioButton");
+      const fullCard = document.getElementById("modeFullCard");
+      const summaryCard = document.getElementById("modeSummaryCard");
+      const fullInput = document.querySelector('input[value="full"]');
+      const summaryInput = document.querySelector('input[value="summary"]');
+      const modeInputs = document.querySelectorAll('input[name="audioMode"]');
+
+      voiceSelect.value = sessionStorage.getItem("audioVoice") || "en-US-AriaNeural";
+
+      function showSummaryErrorPopup(message) {
+        const normalized = String(message || "Summary generation failed.")
+          .replace(/\s+\[\{.*$/s, "")
+          .trim();
+
+        window.CIH.showAlert({
+          title: "Summary Generation Failed",
+          message: normalized,
+          tone: "error"
+        });
+      }
+
+      if (!contentId) {
+        currentContentId.textContent = "No active session";
+        summaryOutput.textContent = "Start from the scraper page first so a content session can be loaded here.";
+        generateButton.disabled = true;
+        goToAudioButton.classList.add("hidden");
+        return;
+      }
+
+      currentContentId.textContent = contentId;
+
+      modeInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          if (input.value === "summary" && input.disabled) {
+            summaryStatus.textContent = "Generate a summary first before choosing summary audio.";
+            fullInput.checked = true;
+          }
+
+          fullCard.classList.toggle("is-selected", fullInput.checked);
+          summaryCard.classList.toggle("is-selected", summaryInput.checked);
+          sessionStorage.setItem("audioMode", fullInput.checked ? "full" : "summary");
+        });
+      });
+
+      function updateModeCards(content) {
+        const summaryWords = (content.summary || "").split(/\s+/).filter(Boolean).length;
+        const hasSummary = Boolean(content.summary && content.summary.trim());
+        const fullDuration = `${window.CIH.estimateReadDuration(content.wordCount)} minutes`;
+        const summaryDuration = hasSummary
+          ? `${window.CIH.estimateReadDuration(summaryWords)} minutes`
+          : "Generate summary first";
+
+        fullCard.querySelector("p").textContent = `${content.wordCount.toLocaleString()} words`;
+        fullCard.querySelector("small").textContent = `Estimated duration: ${fullDuration}`;
+        summaryCard.querySelector("p").textContent = hasSummary
+          ? `${summaryWords.toLocaleString()} words`
+          : "Summary not available yet";
+        summaryCard.querySelector("small").textContent = hasSummary
+          ? `Estimated duration: ${summaryDuration}`
+          : "Click Generate Summary to unlock this mode";
+        summaryInput.disabled = !hasSummary;
+        summaryCard.classList.toggle("is-disabled", !hasSummary);
+
+        const preferredMode = sessionStorage.getItem("audioMode") || (hasSummary ? "summary" : "full");
+        if (!hasSummary) {
+          fullInput.checked = true;
+          summaryInput.checked = false;
+          sessionStorage.setItem("audioMode", "full");
+        } else {
+          fullInput.checked = preferredMode === "full";
+          summaryInput.checked = preferredMode === "summary";
+        }
+
+        fullCard.classList.toggle("is-selected", fullInput.checked);
+        summaryCard.classList.toggle("is-selected", summaryInput.checked);
+      }
+
+      async function loadContent() {
+        try {
+          window.CIH.showLoader("Loading content");
+          const content = await window.CIH.apiFetch(`/api/content/${contentId}`);
+          const sourceText = content.sourceType === "url" ? content.sourceUrl : content.fileName;
+
+          sourceLabel.textContent = sourceText || content.title || "Saved content";
+          originalWordCount.textContent = `${content.wordCount.toLocaleString()} words`;
+          summaryWordCount.textContent = content.summary
+            ? `${content.summary.split(/\s+/).filter(Boolean).length.toLocaleString()} words`
+            : "Not generated yet";
+          summaryDate.textContent = window.CIH.formatDate(content.createdAt);
+          summaryOutput.textContent = content.summary || "Click Generate Summary to request Gemini output for this content.";
+          sessionStorage.setItem("contentSnapshot", JSON.stringify(content));
+          updateModeCards(content);
+        } catch (error) {
+          summaryOutput.textContent = error.message;
+          summaryStatus.textContent = error.message;
+        } finally {
+          window.CIH.hideLoader();
+        }
+      }
+
+      generateButton.addEventListener("click", async () => {
+        const button = document.getElementById("generateSummaryButton");
+        window.CIH.setButtonLoading(button, true);
+        window.CIH.showLoader("Generating summary");
+        summaryStatus.innerHTML = '<span class="loader-dots" aria-hidden="true"><span></span><span></span><span></span></span> Generating summary...';
+
+        try {
+          const payload = await window.CIH.apiFetch(`/api/content/summarize/${contentId}`);
+          summaryOutput.textContent = payload.summary;
+          originalWordCount.textContent = `${payload.originalWordCount.toLocaleString()} words`;
+          summaryWordCount.textContent = `${payload.summaryWordCount.toLocaleString()} words`;
+          summaryStatus.textContent = "Summary generated successfully.";
+          await loadContent();
+        } catch (error) {
+          summaryStatus.textContent = error.message;
+          window.CIH.showToast("Summary generation failed.");
+          showSummaryErrorPopup(error.message);
+        } finally {
+          window.CIH.setButtonLoading(button, false);
+          window.CIH.hideLoader();
+        }
+      });
+
+      document.getElementById("previewVoiceButton").addEventListener("click", () => {
+        const voice = voiceSelect.value;
+        sessionStorage.setItem("audioVoice", voice);
+        summaryStatus.textContent = `Voice preview selected: ${voice}`;
+      });
+
+      goToAudioButton.addEventListener("click", () => {
+        const mode = document.querySelector('input[name="audioMode"]:checked').value;
+        const voice = voiceSelect.value;
+        sessionStorage.setItem("audioMode", mode);
+        sessionStorage.setItem("audioVoice", voice);
+        window.CIH.showLoader("Preparing audio player");
+      });
+
+      loadContent();
+    });
+  </script>
+</body>
+</html>

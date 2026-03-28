@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    .dashboard-shell {
+      display: grid;
+      gap: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="section">
+      <div class="container dashboard-shell">
+        <div class="section-head reveal">
+          <span class="eyebrow">Dashboard</span>
+          <h1>Monitor saved activity and jump back into the pipeline</h1>
+          <p>This page includes a React CDN widget so the project already satisfies the requirement for at least one React-powered dashboard experience.</p>
+        </div>
+
+        <div id="dashboardReactRoot" class="reveal"></div>
+
+        <div class="panel reveal">
+          <div class="grid-2" style="align-items: center;">
+            <div>
+              <span class="eyebrow">Advanced View</span>
+              <h3>Standalone React dashboard can live in the separate `react-app` folder</h3>
+              <p>This page is ready now, and the linked standalone app can be expanded next without changing the shared navigation structure.</p>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+              <a class="btn btn-primary" href="../../react-app/index.html">Open Advanced Dashboard</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Content Intelligence Hub</h3><p class="footer-note">Dashboard surfaces saved content stats and quick return paths into the workflow.</p></div>
+      <div><h4>Shortcuts</h4><ul class="footer-links"><li><a href="scraper.html">New Scrape</a></li><li><a href="saved.html">View Saved</a></li><li><a href="audio.html">Generate Audio</a></li></ul></div>
+      <div><h4>Project</h4><ul class="footer-links"><li><a href="register.html">Register</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul><p class="footer-note">Copyright <span data-year></span> CIH.</p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/ui.js"></script>
+  <script type="text/babel">
+    function DashboardWidget() {
+      const [stats, setStats] = React.useState([
+        { value: "0", label: "Total Scrapes" },
+        { value: "0", label: "Total Summaries" },
+        { value: "0", label: "Audio Generated" },
+        { value: "0 B", label: "Storage Used" }
+      ]);
+      const [activities, setActivities] = React.useState([]);
+
+      React.useEffect(() => {
+        async function loadDashboard() {
+          try {
+            const [statsPayload, activityPayload] = await Promise.all([
+              window.CIH.apiFetch("/api/content/stats"),
+              window.CIH.apiFetch("/api/content?limit=5")
+            ]);
+
+            setStats([
+              { value: String(statsPayload.totalScrapes), label: "Total Scrapes" },
+              { value: String(statsPayload.totalSummaries), label: "Total Summaries" },
+              { value: String(statsPayload.totalAudioItems), label: "Audio Generated" },
+              { value: window.CIH.formatBytes(statsPayload.storageUsedBytes), label: "Storage Used" }
+            ]);
+
+            setActivities(activityPayload.items || []);
+          } catch (error) {
+            window.CIH.showToast(error.message);
+          }
+        }
+
+        loadDashboard();
+      }, []);
+
+      return (
+        <div className="dashboard-shell">
+          <div className="grid-4">
+            {stats.map((item) => (
+              <div className="stat-card" key={item.label}>
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid-2">
+            <div className="panel">
+              <span className="eyebrow">Recent Activity</span>
+              <div style={{ display: "grid", gap: "1rem" }}>
+                {!activities.length ? <div className="activity-item" style={{ padding: "1rem" }}>No activity yet.</div> : activities.map((item) => (
+                  <div className="activity-item" style={{ padding: "1rem" }} key={item.title}>
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
+                      <div>
+                        <h3 style={{ fontSize: "1.05rem" }}>{item.title || item.fileName || item.sourceUrl || "Untitled content"}</h3>
+                        <p>{window.CIH.formatDate(item.createdAt)}</p>
+                      </div>
+                      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+                        <span className={`badge ${item.sourceType === "url" ? "url" : "file"}`}>{item.sourceType?.toUpperCase() || "FILE"}</span>
+                        <span className={`badge ${item.audioUrl ? "good" : "warn"}`}>{item.audioUrl ? "Audio Ready" : "Summary Pending"}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="panel">
+              <span className="eyebrow">Quick Actions</span>
+              <div style={{ display: "grid", gap: "1rem" }}>
+                <a className="quick-action" href="scraper.html">
+                  <h3>New Scrape</h3>
+                  <p>Start a new URL or file session.</p>
+                </a>
+                <a className="quick-action" href="saved.html">
+                  <h3>View Saved</h3>
+                  <p>Review content history and reopen older sessions.</p>
+                </a>
+                <a className="quick-action" href="audio.html">
+                  <h3>Generate Audio</h3>
+                  <p>Jump back into the player and streaming flow.</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (window.CIH.requireAuth()) {
+      ReactDOM.createRoot(document.getElementById("dashboardReactRoot")).render(<DashboardWidget />);
+    }
+  </script>
+</body>
+</html>

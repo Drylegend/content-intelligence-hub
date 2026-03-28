@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About - Content Intelligence Hub</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .about-visual {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .about-visual img {
+      width: 100%;
+      min-height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .team-card {
+      text-align: center;
+    }
+
+    .team-avatar {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(108, 99, 255, 0.16);
+      font: 700 1.4rem/1 var(--font-display);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">CIH</span>
+        <span>Content Intelligence Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="scraper.html">Scraper</a></li>
+        <li><a href="saved.html">Saved</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth"></div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">About The Project</span>
+          <h1>Built as a focused hub for research, summarization, and listening</h1>
+          <p>CIH is designed as a modular project where each layer has a clear responsibility: the frontend handles the experience, the backend orchestrates processing, and MongoDB Atlas stores the working history.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container grid-2">
+        <div class="reveal">
+          <span class="eyebrow">Mission</span>
+          <h2>Make dense content easier to move through</h2>
+          <p>Instead of forcing users to juggle separate tools for scraping, reading, note-taking, and playback, the project pulls those actions into one focused workflow.</p>
+          <ul class="check-list" style="margin-top: 1.5rem;">
+            <li><strong>Capture from multiple source types</strong> URLs, PDFs, DOCX files, and TXT uploads all feed the same pipeline.</li>
+            <li><strong>Choose the right listening mode</strong> Users can convert either the full text or a concise summary into speech.</li>
+            <li><strong>Persist everything that matters</strong> Metadata, saved summaries, and cloud audio links stay connected.</li>
+          </ul>
+        </div>
+        <div class="reveal">
+          <div class="about-visual">
+            <picture>
+              <source srcset="../images/about-bg-dark.png" media="(prefers-color-scheme: dark)" />
+              <img
+                src="../images/about-bg.png"
+                alt="Content Intelligence Hub project architecture visual"
+                data-theme-image
+                data-light-src="../images/about-bg.png"
+                data-dark-src="../images/about-bg-dark.png"
+              />
+            </picture>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Tech Stack</span>
+          <h2>Clear layer ownership from interface to persistence</h2>
+        </div>
+        <div class="table-shell reveal">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Layer</th>
+                <th>Technology</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Frontend</td><td>HTML, CSS, Vanilla JavaScript</td><td>Responsive multi-page interface with validation and shared navigation</td></tr>
+              <tr><td>Dashboard</td><td>React via CDN</td><td>Richer stats and activity views without a build step</td></tr>
+              <tr><td>Backend</td><td>Node.js + Express</td><td>Routing, authentication, scraping, summarization, and TTS orchestration</td></tr>
+              <tr><td>Database</td><td>MongoDB Atlas</td><td>Cloud persistence for users, content, metadata, and saved audio links</td></tr>
+              <tr><td>AI + Audio</td><td>Gemini API + edge-tts-universal</td><td>Summary generation and chunked text-to-speech streaming</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Core Team</span>
+          <h2>Three roles the project is designed around</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card team-card reveal">
+            <div class="team-avatar">FE</div>
+            <h3>Frontend Builder</h3>
+            <p>Shapes the multi-page interface, validation flows, and navigation consistency.</p>
+          </article>
+          <article class="card team-card reveal">
+            <div class="team-avatar">BE</div>
+            <h3>API Engineer</h3>
+            <p>Owns controllers, routes, auth, scraping logic, and audio orchestration.</p>
+          </article>
+          <article class="card team-card reveal">
+            <div class="team-avatar">DX</div>
+            <h3>Data Integrator</h3>
+            <p>Connects MongoDB, Cloudinary, and content metadata for durable saved sessions.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Milestones</span>
+          <h2>Planned build sequence for the full project</h2>
+        </div>
+        <ol class="timeline-list">
+          <li class="reveal"><strong>Phase 1</strong> Generate the shared frontend shell and the ten-page information architecture.</li>
+          <li class="reveal"><strong>Phase 2</strong> Wire controllers, models, and routes into an MVC Express backend.</li>
+          <li class="reveal"><strong>Phase 3</strong> Attach Gemini summarization, TTS chunking, and WebSocket streaming.</li>
+          <li class="reveal"><strong>Phase 4</strong> Save content records and cloud audio references into MongoDB Atlas and Cloudinary.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>Content Intelligence Hub</h3>
+        <p class="footer-note">A modular academic-style build with a full-stack architecture and an audio-first user experience.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul class="footer-links">
+          <li><a href="features.html">Features</a></li>
+          <li><a href="scraper.html">Scraper</a></li>
+          <li><a href="saved.html">Saved Content</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul class="footer-links">
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <p class="footer-note">Copyright <span data-year></span> CIH.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/ui.js"></script>
+</body>
+</html>
