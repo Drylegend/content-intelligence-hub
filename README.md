@@ -340,4 +340,4 @@ The player waits for the first generated chunk before advancing the live timer.
 
 ## License / Usage
 
-This repository appears to be a project build/demo workspace. Add your preferred license if you plan to publish it publicly.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
